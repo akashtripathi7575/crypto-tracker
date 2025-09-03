@@ -24,6 +24,8 @@ async function fetchCryptoData(coinId, amount) {
    
    const data = await response.json();
 
+   console.log(data);
+
    if(!data || data.length === 0) {
        resultSpan.textContent = "Coint not found";
        coinImage.src = "";
@@ -35,7 +37,7 @@ async function fetchCryptoData(coinId, amount) {
    const coin = data[0];
 
    coinName.textContent = coin.name;
-   coinPrice.textContent = `Coin price is = $${coin.current_price}`;
+   coinPrice.textContent = `Current price = $${coin.current_price}`;
    coinImage.src = coin.image;
 
    const totalValue = amount * coin.current_price;
