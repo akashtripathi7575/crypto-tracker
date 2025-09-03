@@ -1,68 +1,25 @@
-import apiKey from "./config.js";
+import { amountInput, resultSpan, coinInput, convertBtn } from "./dom.js";
+import { fetchCryptoData } from "./cryptoAPI.js";
+import { resetUI, updateUI } from "./ui.js";
 
-const amountInput = document.querySelector('#amount-input');
-const resultSpan =  document.querySelector('#conversion-result');
-const coinInput = document.querySelector('#coin-input');
-const convertBtn = document.querySelector('#convert-btn');
-const coinImage = document.querySelector('#coinImage');
-const coinName = document.querySelector('#coinName');
-const coinPrice = document.querySelector('#coinPrice');
+// show default value
+resetUI("0$");
 
+convertBtn.addEventListener("click", async () => {
+  const amount = parseFloat(amountInput.value);
+  const coinId = coinInput.value.trim().toLowerCase();
 
-async function fetchCryptoData(coinId, amount) {
-    
-    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinId}`;
+  if (!coinId || isNaN(amount) || amount <= 0) {
+    resetUI("Enter a valid coin or amount.");
+    return;
+  }
 
-    try {
-    const response = await fetch(url, {
-        method: "GET",
-        headers: {
-            "x-cg-demo-api-key": apiKey,
-            "Accept": "application/json"
-        }
-    });
-   
-   const data = await response.json();
+  const coin = await fetchCryptoData(coinId);
 
-   console.log(data);
+  if (!coin) {
+    resetUI("Coin not found");
+    return;
+  }
 
-   if(!data || data.length === 0) {
-       resultSpan.textContent = "Coint not found";
-       coinImage.src = "";
-       coinName.textContent = "";
-       coinPrice.textContent = "";
-       return;
-   }
-
-   const coin = data[0];
-
-   coinName.textContent = coin.name;
-   coinPrice.textContent = `Current price = $${coin.current_price}`;
-   coinImage.src = coin.image;
-
-   const totalValue = amount * coin.current_price;
-   const value = resultSpan.textContent = `${amount} ${coin.symbol.toUpperCase()} = $${totalValue.toFixed(3)}`;
-   console.log(value);
-
-    } catch (error) {
-        console.error("Error fetching crypto data:", error);
-        resultSpan.textContent = "Error fetching data. Try again later";
-    }
-}
-
-convertBtn.addEventListener('click', () => {
-    const amount = parseFloat(amountInput.value);
-    const coinId = coinInput.value.trim().toLowerCase();
-
-    if(!coinId || isNaN(amount) || amount <= 0) {
-        resultSpan.textContent = "Enter a valid coin or amount.";
-        coinImage.src = "";
-        coinName.textContent = "";
-        coinPrice.textContent = "";
-        return;
-    }
-
-    fetchCryptoData(coinId, amount);
+  updateUI(coin, amount);
 });
-
-
