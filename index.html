@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crypto-Tracker</title>
-    <link rel="stylesheet" href="styles/style.css">
-</head>
-<body>
-    <header class = "main-header">
-        <h1>Crypto Tracker</h1>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <header class="main-header">
+      <h1>Crypto Tracker</h1>
     </header>
     <main>
-    <div>
-        <section class="converter"></section>
-            <input type="text" id="coin-input" placeholder="Enter the coin"/>
-            <button id="convert-btn">Convert</button>
-            <h3>To Dollars is: <span id="conversion-result">0</span></h3>
-        </section>
-    </div>
+      <section class="converter">
+        <form>
+          <label for="amount-input">Amount:</label>
+          <input type="text" id="amount-input" placeholder="Enter amount" />
+          <label for="coin-input">Coin:</label>
+          <input type="text" id="coin-input" placeholder="Enter the coin" />
+          <button id="convert-btn" type="button">Convert</button>
+        </form>
+        <h3><span id="conversion-result">0$</span></h3>
+        <div id="cryptoCard">
+          <img id="coinImage" src=""  width="64" />
+          <h2 id="coinName"></h2>
+          <p id="coinPrice"></p>
+        </div>
+      </section>
     </main>
     <script type="module" src="scripts/script.js"></script>
-</body>
+  </body>
 </html>
